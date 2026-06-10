@@ -1,20 +1,31 @@
-import { Github } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="w-full py-8 mt-auto border-t border-border/40 bg-background/50 backdrop-blur-sm relative z-10">
-      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-4 sm:flex-row sm:px-6">
-        <p className="text-xs font-medium tracking-wide text-muted-foreground/70">
-          developed by <span className="text-foreground/90 font-semibold tracking-normal">Saif(Jeff) Waseem</span>
-        </p>
+    <footer className="w-full py-6 mt-auto">
+      <div className="mx-auto flex max-w-5xl items-center justify-center gap-3 text-sm text-muted-foreground">
+        <span>&copy; {currentYear}</span>
+        <span className="text-border/60">|</span>
+        <span className="text-foreground">Developed by Saif(Jeff) Waseem</span>
+        <span className="text-border/60">|</span>
         <a
           href="https://github.com/sa1ffffff"
           target="_blank"
           rel="noreferrer"
-          className="group rounded-full p-2 transition-all hover:bg-muted"
+          className="text-foreground transition-colors hover:text-primary"
           aria-label="GitHub Profile"
         >
-          <Github className="h-4 w-4 text-muted-foreground/60 transition-colors group-hover:text-foreground" strokeWidth={2} />
+          <Github className="h-[18px] w-[18px]" strokeWidth={2} />
+        </a>
+        <span className="text-muted-foreground/40">&middot;</span>
+        <a
+          href="mailto:saifullahwaseem.dev@gmail.com"
+          className="text-foreground transition-colors hover:text-primary"
+          aria-label="Email"
+        >
+          <Mail className="h-[18px] w-[18px]" strokeWidth={2} />
         </a>
       </div>
     </footer>
