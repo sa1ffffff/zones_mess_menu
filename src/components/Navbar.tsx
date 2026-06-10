@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, Sun, Moon } from "lucide-react";
+import { LogOut, Sun, Moon, ShieldCheck } from "lucide-react";
 
 export function Navbar() {
   const { user, loading } = useAuth();
@@ -48,6 +48,15 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Link
+            to="/admin"
+            id="admin-panel-btn"
+            className="focus-ring inline-flex items-center gap-1.5 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1.5 text-xs font-semibold text-accent transition-all hover:bg-accent/20 hover:border-accent/50 hover:scale-105 active:scale-95 shadow-sm"
+          >
+            <ShieldCheck className="h-3.5 w-3.5" />
+            Admin
+          </Link>
+
           <Button
             variant="ghost"
             size="icon"

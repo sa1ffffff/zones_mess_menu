@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { DinnerCard } from "@/components/DinnerCard";
 import { WeeklyView } from "@/components/WeeklyView";
+import { QueryDialog } from "@/components/QueryDialog";
 import { cn } from "@/lib/utils";
 import {
   fetchDinnersInRange,
@@ -16,6 +17,7 @@ import {
   type RatingSummary,
 } from "@/lib/data";
 import { formatLongDate, getWeekDates, todayISO } from "@/lib/date-utils";
+import { MessageSquarePlus } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -38,6 +40,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const [view, setView] = useState<"daily" | "weekly">("daily");
+  const [queryOpen, setQueryOpen] = useState(false);
   const today = todayISO();
   const week = useMemo(() => getWeekDates(today), [today]);
   const start = week[0];
@@ -132,6 +135,25 @@ function HomePage() {
           )}
         </div>
       </main>
+
+      {/* Floating Submit Query Button */}
+      <div className="fixed bottom-8 right-6 z-40 sm:bottom-10 sm:right-8">
+        <motion.button
+          id="open-query-dialog-btn"
+          initial={{ opacity: 0, scale: 0.8, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.5, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          onClick={() => setQueryOpen(true)}
+          whileHover={{ scale: 1.06 }}
+          whileTap={{ scale: 0.95 }}
+          className="flex items-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground shadow-[0_8px_28px_-6px_oklch(from_var(--accent)_l_c_h_/_0.4)] transition-shadow hover:shadow-[0_8px_36px_-4px_oklch(from_var(--accent)_l_c_h_/_0.55)]"
+        >
+          <MessageSquarePlus className="h-4 w-4" />
+          Submit a Query
+        </motion.button>
+      </div>
+
+      <QueryDialog open={queryOpen} onOpenChange={setQueryOpen} />
     </div>
   );
 }
