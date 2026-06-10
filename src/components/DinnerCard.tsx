@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Clock, UtensilsCrossed, Sparkles } from "lucide-react";
+import { UtensilsCrossed, Sparkles } from "lucide-react";
 import { StarRow } from "./Stars";
 import { Button } from "@/components/ui/button";
 import { formatLongDate, todayISO } from "@/lib/date-utils";
@@ -70,10 +70,7 @@ export function DinnerCard({
             <h2 className="mt-4 text-2xl font-semibold tracking-tight sm:text-3xl">
               {formatLongDate(date)}
             </h2>
-            <div className="mt-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4" />
-              {dinner ? `${dinner.time_start} to ${dinner.time_end}` : "7:30 PM to 9:00 PM"}
-            </div>
+
           </div>
 
           <div className="text-right">

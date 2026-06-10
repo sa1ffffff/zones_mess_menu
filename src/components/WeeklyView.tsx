@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Clock, UtensilsCrossed } from "lucide-react";
+import { UtensilsCrossed } from "lucide-react";
 import { StarRow } from "./Stars";
 import { RatingDialog } from "./RatingDialog";
 import { formatShortDate, todayISO, weekdayName } from "@/lib/date-utils";
@@ -21,6 +21,7 @@ export function WeeklyView({
 }) {
   const { user } = useAuth();
   const [activeDate, setActiveDate] = useState<string | null>(null);
+  const [expandedDates, setExpandedDates] = useState<Record<string, boolean>>({});
 
   const weekdays = days.filter((d) => {
     const name = weekdayName(d);
@@ -36,6 +37,11 @@ export function WeeklyView({
     setActiveDate(date);
   };
 
+  const toggleExpand = (e: React.MouseEvent, date: string) => {
+    e.stopPropagation();
+    setExpandedDates((prev) => ({ ...prev, [date]: !prev[date] }));
+  };
+
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -43,16 +49,16 @@ export function WeeklyView({
           const dinner = dinners[date] ?? null;
           const summary = summaries[date] ?? { average: 0, count: 0 };
           const isToday = date === todayISO();
+          const isExpanded = !!expandedDates[date];
           return (
-            <motion.button
-              type="button"
+            <motion.div
               key={date}
               onClick={() => handleDayClick(date, !!dinner)}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               className={cn(
-                "surface-card surface-card-hover focus-ring group relative text-left p-5",
+                "surface-card surface-card-hover focus-ring group relative text-left p-5 cursor-pointer",
                 isToday && "ring-1 ring-primary/30",
                 !dinner && "cursor-default opacity-90",
               )}
@@ -66,26 +72,31 @@ export function WeeklyView({
               <div className="mt-1 text-lg font-semibold tracking-tight">
                 {formatShortDate(date)}
               </div>
-              <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
-                <Clock className="h-3 w-3" />
-                {dinner ? `${dinner.time_start} to ${dinner.time_end}` : "Not scheduled"}
-              </div>
+
 
               <div className="mt-5 min-h-[80px]">
                 {dinner && dinner.menu_items.length > 0 ? (
                   <ul className="space-y-1.5">
-                    {dinner.menu_items.slice(0, 4).map((item, idx) => (
-                      <li
-                        key={idx}
-                        className="flex items-start gap-2 text-sm text-foreground"
-                      >
-                        <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary/70" />
-                        <span className="line-clamp-1">{item}</span>
-                      </li>
-                    ))}
+                    {dinner.menu_items
+                      .slice(0, isExpanded ? undefined : 4)
+                      .map((item, idx) => (
+                        <li
+                          key={idx}
+                          className="flex items-start gap-2 text-sm text-foreground"
+                        >
+                          <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-primary/70" />
+                          <span className={cn(!isExpanded && "line-clamp-1")}>{item}</span>
+                        </li>
+                      ))}
                     {dinner.menu_items.length > 4 && (
-                      <li className="pl-3 text-xs text-muted-foreground">
-                        +{dinner.menu_items.length - 4} more
+                      <li>
+                        <button
+                          type="button"
+                          onClick={(e) => toggleExpand(e, date)}
+                          className="pl-3 text-xs text-primary font-medium hover:underline focus:outline-none cursor-pointer"
+                        >
+                          {isExpanded ? "Show less" : `+${dinner.menu_items.length - 4} more`}
+                        </button>
                       </li>
                     )}
                   </ul>
@@ -112,7 +123,7 @@ export function WeeklyView({
                   )}
                 </div>
               </div>
-            </motion.button>
+            </motion.div>
           );
         })}
       </div>
