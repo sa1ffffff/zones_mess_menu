@@ -1,14 +1,16 @@
 # 🍽️ Zones Mess Menu
 
-A web app for the **Zones LLC Islamabad office** to view the monthly mess (cafeteria) food menu. Built with React and Firebase, deployed via Antigravity IDE.
+A web app for the **Zones LLC Islamabad office** to view the monthly mess (cafeteria) food menu. Built with React and Supabase.
 
 ---
 
 ## ✨ Features
 
 - 📅 Browse the full monthly food menu by week and day
-- 🔐 Firebase Authentication for staff access
-- ☁️ Firestore backend for real-time menu data
+- ⭐ Rate dinners and view rating summaries
+- 💬 Submit feedback/queries to the admin
+- 🔐 Supabase Authentication (Google Sign-in) for staff access
+- ☁️ Supabase PostgreSQL backend for real-time menu data, ratings, and queries
 - 📱 Responsive design — works on desktop and mobile
 
 ---
@@ -17,11 +19,10 @@ A web app for the **Zones LLC Islamabad office** to view the monthly mess (cafet
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | React |
-| Backend / Database | Firebase Firestore |
-| Authentication | Firebase Auth |
-| Deployment | Antigravity IDE |
-| Tooling | Firebase MCP, Google Stitch MCP |
+| Frontend | React, TanStack Start & Router |
+| Styling | Tailwind CSS, shadcn/ui (Radix) |
+| Backend / Database | Supabase (PostgreSQL) |
+| Authentication | Supabase Auth (OAuth Google) |
 
 ---
 
@@ -30,8 +31,7 @@ A web app for the **Zones LLC Islamabad office** to view the monthly mess (cafet
 ### Prerequisites
 
 - Node.js installed
-- Firebase project set up
-- Access to the Zones Firebase credentials
+- Supabase project set up
 
 ### Installation
 
@@ -46,15 +46,13 @@ npm install
 
 ### Environment Setup
 
-Create a `.env` file in the root directory and add your Firebase config:
+Create a `.env` file in the root directory and add your Supabase config:
 
 ```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
+SUPABASE_URL=your_supabase_url
+SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_anon_key
 ```
 
 > ⚠️ Never commit your `.env` file. It is already listed in `.gitignore`.
@@ -65,22 +63,22 @@ VITE_FIREBASE_APP_ID=your_app_id
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`.
+The app will be available at `http://localhost:8080`.
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 zones_mess_menu/
 ├── src/
-│   ├── components/       # Reusable UI components
-│   ├── pages/            # App pages/views
-│   ├── firebase.js       # Firebase initialization
-│   └── main.jsx          # App entry point
-├── public/
-├── .env                  # Firebase credentials (not committed)
-├── .gitignore
+│   ├── components/       # Reusable UI components (shadcn etc.)
+│   ├── integrations/     # Supabase client and types
+│   ├── lib/              # Utilities, data fetching, menu parsing
+│   └── routes/           # TanStack file-based routing
+├── public/               # Static assets
+├── supabase/             # Supabase migrations
+├── .env                  # Supabase credentials (not committed)
 ├── package.json
 └── README.md
 ```
@@ -89,31 +87,26 @@ zones_mess_menu/
 
 ## 🔐 Authentication
 
-Users log in via Firebase Auth. Only authenticated Zones staff members can access the menu. Contact your admin to get access.
+Users log in via Supabase Auth using their Google accounts. Authenticated users can rate meals and access specific features.
 
 ---
 
-## 🗃️ Firestore Data Structure
+## 🗃️ Database Structure (Supabase)
 
-```
-menu/
-  └── {month_year}/         # e.g., "june_2026"
-        └── weeks/
-              └── {week_number}/
-                    └── {day}/
-                          ├── items: string[]
-                          └── date: string
-```
+- **dinners**: Stores the daily food menus (date, time_start, time_end, menu_items).
+- **ratings**: Stores user ratings for dinners.
+- **queries**: Stores user feedback and queries submitted from the app.
+
+*Note: The app displays the active menu from hardcoded data in `src/lib/menu-data.ts`. The admin panel allows uploading markdown files to parse into the `dinners` table.*
 
 ---
 
 ## 📦 Deployment
 
-This project is deployed via **Antigravity IDE** using Firebase Hosting. To deploy manually:
+Deploy using Vite and your preferred Node.js hosting provider.
 
 ```bash
 npm run build
-firebase deploy
 ```
 
 ---
