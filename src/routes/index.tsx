@@ -24,7 +24,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "The Zones Islamabad dinner menu — see what's for dinner today, browse the week, and rate the meals.",
+          "The Zones Islamabad dinner menu: see what's for dinner today, browse the week, and rate the meals.",
       },
       { property: "og:title", content: "Zones Dinner Menu" },
       {
@@ -69,7 +69,8 @@ function HomePage() {
   const loading = dinnersQ.isLoading || ratingsQ.isLoading;
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="ambient-glow" />
       <Navbar />
 
       <main className="mx-auto max-w-5xl px-4 pb-24 pt-10 sm:px-6 sm:pt-16">

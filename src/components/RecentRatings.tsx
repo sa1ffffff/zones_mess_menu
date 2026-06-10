@@ -21,7 +21,7 @@ export function RecentRatings({ date }: { date: string }) {
   if (!data || data.length === 0) {
     return (
       <div className="text-xs text-muted-foreground">
-        No ratings yet — be the first to rate.
+        No ratings yet. Be the first to rate!
       </div>
     );
   }

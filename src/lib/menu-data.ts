@@ -1,0 +1,186 @@
+import type { Dinner } from "./data";
+
+export const HARDCODED_DINNERS: Dinner[] = [
+  // Week 1
+  {
+    id: "2026-06-01",
+    date: "2026-06-01",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Naan & Roti", "Chicken Karahi"],
+  },
+  {
+    id: "2026-06-02",
+    date: "2026-06-02",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita + Achar", "Kaly Masar", "White Rice", "Live Jalabi"],
+  },
+  {
+    id: "2026-06-03",
+    date: "2026-06-03",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Mint Chattni", "Daal Makhni", "Naan & Roti"],
+  },
+  {
+    id: "2026-06-04",
+    date: "2026-06-04",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Chicken Biryani", "Potato Cutlet", "Matanjan"],
+  },
+  {
+    id: "2026-06-05",
+    date: "2026-06-05",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Chicken Palak", "Naan & Roti"],
+  },
+
+  // Week 2
+  {
+    id: "2026-06-08",
+    date: "2026-06-08",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "BBQ Chicken Tikka 1/4", "Daigi Channa Pulao", "Cold Drink"],
+  },
+  {
+    id: "2026-06-09",
+    date: "2026-06-09",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Russian Salad", "Raita", "Murgh Channy", "Naan & Roti"],
+  },
+  {
+    id: "2026-06-10",
+    date: "2026-06-10",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Moong Masoor Daal", "White Rice", "Achar"],
+  },
+  {
+    id: "2026-06-11",
+    date: "2026-06-11",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Mix Chana Chaat", "Raita", "Mix Vegetable", "Naan & Roti"],
+  },
+  {
+    id: "2026-06-12",
+    date: "2026-06-12",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Chicken Smoke Karahi", "Potato Cutlet", "Leb e Shireen"],
+  },
+
+  // Week 3
+  {
+    id: "2026-06-15",
+    date: "2026-06-15",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Kaly Masar", "Naan & Roti", "Shahi Tukary"],
+  },
+  {
+    id: "2026-06-16",
+    date: "2026-06-16",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Chicken Potato Biryani"],
+  },
+  {
+    id: "2026-06-17",
+    date: "2026-06-17",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Rassian Salad", "Mint Chattni", "Shahi Daal", "Naan & Roti", "Live Jalebi"],
+  },
+  {
+    id: "2026-06-18",
+    date: "2026-06-18",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Chicken Haleem", "White Rice", "Achar"],
+  },
+  {
+    id: "2026-06-19",
+    date: "2026-06-19",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Chicken Qorma", "Naan & Roti"],
+  },
+  {
+    id: "2026-06-22",
+    date: "2026-06-22",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "BBQ Chicken Tikka 1/4", "Daigi Channa Pulao"],
+  },
+  {
+    id: "2026-06-23",
+    date: "2026-06-23",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad/Ingredients", "Mint Chattni + Achar", "Naan & Roti", "Leb e Shireen"],
+  },
+  {
+    id: "2026-06-24",
+    date: "2026-06-24",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Mutter Pulao", "Shaami Kabab"],
+  },
+  {
+    id: "2026-06-25",
+    date: "2026-06-25",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Been Salad", "Raita", "Chicken Karahi", "Naan & Roti"],
+  },
+  {
+    id: "2026-06-26",
+    date: "2026-06-26",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Chicken Chilli Dry", "Egg Fried Rice", "Cold Drink"],
+  },
+
+  // Week 4
+  {
+    id: "2026-06-29",
+    date: "2026-06-29",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Beef Nihari with Cardimuns", "Naan & Roti", "Shahi Tukary"],
+  },
+  {
+    id: "2026-06-30",
+    date: "2026-06-30",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Mix Chana Chaat", "Raita", "Mix Vegetable", "Naan & Roti"],
+  },
+  {
+    id: "2026-07-01",
+    date: "2026-07-01",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Mint Chattni", "Chicken Biryani", "Suji Besan Khuia Halwa"],
+  },
+  {
+    id: "2026-07-02",
+    date: "2026-07-02",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Been Salad", "Mint Chutney", "Daal Channa", "Naan & Roti"],
+  },
+  {
+    id: "2026-07-03",
+    date: "2026-07-03",
+    time_start: "7:30 PM",
+    time_end: "9:00 PM",
+    menu_items: ["Fresh Salad", "Raita", "Chicken Jalfrezi", "Naan & Roti"],
+  },
+];

@@ -20,14 +20,10 @@ export type Rating = {
 
 export type RatingSummary = { average: number; count: number };
 
+import { HARDCODED_DINNERS } from "./menu-data";
+
 export async function fetchDinnersInRange(start: string, end: string) {
-  const { data, error } = await supabase
-    .from("dinners")
-    .select("*")
-    .gte("date", start)
-    .lte("date", end);
-  if (error) throw error;
-  return (data ?? []) as Dinner[];
+  return HARDCODED_DINNERS.filter((d) => d.date >= start && d.date <= end);
 }
 
 export async function fetchRatingsInRange(start: string, end: string) {

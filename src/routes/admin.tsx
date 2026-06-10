@@ -79,8 +79,20 @@ function AdminPage() {
               Upload monthly menu
             </h1>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
-              Paste a markdown file or upload one. Only dinner entries are extracted —
+              Paste a markdown file or upload one. Only dinner entries are extracted;
               breakfast and lunch are ignored.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 text-amber-500/90 text-sm flex items-start gap-3">
+          <span className="mt-0.5 text-lg">⚠️</span>
+          <div>
+            <p className="font-semibold">Notice: Active Menu is Hardcoded</p>
+            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+              The application has been configured to read the food menu directly from static files in the codebase (updated monthly). 
+              Changes uploaded through this admin page will be written to the database but will <strong>not</strong> affect the active live menu. 
+              To update the menu, edit the <code>src/lib/menu-data.ts</code> file in the repository.
             </p>
           </div>
         </div>
@@ -127,11 +139,11 @@ function AdminPage() {
                 </div>
                 <Button
                   onClick={save}
-                  disabled={saving || parsed.length === 0}
-                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  disabled={true}
+                  className="rounded-full bg-primary text-primary-foreground hover:bg-primary/90 opacity-60 cursor-not-allowed"
                 >
                   {saving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CheckCircle2 className="mr-2 h-4 w-4" />}
-                  Save to database
+                  Save Disabled
                 </Button>
               </div>
 
@@ -153,7 +165,7 @@ function AdminPage() {
                         <div className="flex items-baseline justify-between gap-2">
                           <div className="text-sm font-semibold">{formatLongDate(p.date)}</div>
                           <div className="text-xs text-muted-foreground">
-                            {p.time_start} – {p.time_end}
+                            {p.time_start} to {p.time_end}
                           </div>
                         </div>
                         <ul className="mt-2 grid gap-1 sm:grid-cols-2">

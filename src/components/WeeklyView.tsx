@@ -7,6 +7,8 @@ import { RatingDialog } from "./RatingDialog";
 import { formatShortDate, todayISO, weekdayName } from "@/lib/date-utils";
 import { cn } from "@/lib/utils";
 import type { Dinner, RatingSummary } from "@/lib/data";
+import { useAuth } from "@/lib/auth";
+import { toast } from "sonner";
 
 export function WeeklyView({
   days,
@@ -17,12 +19,27 @@ export function WeeklyView({
   dinners: Record<string, Dinner | null>;
   summaries: Record<string, RatingSummary>;
 }) {
+  const { user } = useAuth();
   const [activeDate, setActiveDate] = useState<string | null>(null);
+
+  const weekdays = days.filter((d) => {
+    const name = weekdayName(d);
+    return name !== "Saturday" && name !== "Sunday";
+  });
+
+  const handleDayClick = (date: string, hasDinner: boolean) => {
+    if (!hasDinner) return;
+    if (!user) {
+      toast.error("You need to sign in to be able to rate");
+      return;
+    }
+    setActiveDate(date);
+  };
 
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {days.map((date, i) => {
+        {weekdays.map((date, i) => {
           const dinner = dinners[date] ?? null;
           const summary = summaries[date] ?? { average: 0, count: 0 };
           const isToday = date === todayISO();
@@ -30,7 +47,7 @@ export function WeeklyView({
             <motion.button
               type="button"
               key={date}
-              onClick={() => dinner && setActiveDate(date)}
+              onClick={() => handleDayClick(date, !!dinner)}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
@@ -51,7 +68,7 @@ export function WeeklyView({
               </div>
               <div className="mt-2 inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Clock className="h-3 w-3" />
-                {dinner ? `${dinner.time_start} – ${dinner.time_end}` : "—"}
+                {dinner ? `${dinner.time_start} to ${dinner.time_end}` : "Not scheduled"}
               </div>
 
               <div className="mt-5 min-h-[80px]">

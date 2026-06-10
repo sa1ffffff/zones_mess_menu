@@ -8,6 +8,8 @@ import { RatingDialog } from "./RatingDialog";
 import { RecentRatings } from "./RecentRatings";
 import { cn } from "@/lib/utils";
 import type { Dinner, RatingSummary } from "@/lib/data";
+import { useAuth } from "@/lib/auth";
+import { toast } from "sonner";
 
 export function DinnerCard({
   date,
@@ -19,7 +21,16 @@ export function DinnerCard({
   summary: RatingSummary;
 }) {
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
   const isToday = date === todayISO();
+
+  const handleRateClick = () => {
+    if (!user) {
+      toast.error("You need to sign in to be able to rate");
+      return;
+    }
+    setOpen(true);
+  };
 
   return (
     <>
@@ -61,7 +72,7 @@ export function DinnerCard({
             </h2>
             <div className="mt-2 inline-flex items-center gap-1.5 text-sm text-muted-foreground">
               <Clock className="h-4 w-4" />
-              {dinner ? `${dinner.time_start} – ${dinner.time_end}` : "7:30 PM – 9:00 PM"}
+              {dinner ? `${dinner.time_start} to ${dinner.time_end}` : "7:30 PM to 9:00 PM"}
             </div>
           </div>
 
@@ -109,7 +120,7 @@ export function DinnerCard({
           <RecentRatings date={date} />
           <Button
             size="lg"
-            onClick={() => setOpen(true)}
+            onClick={handleRateClick}
             disabled={!dinner}
             className="rounded-full bg-primary px-6 font-medium text-primary-foreground shadow-[var(--shadow-glow)] hover:bg-primary/90"
           >
@@ -136,7 +147,7 @@ function EmptyMenu() {
         <UtensilsCrossed className="h-5 w-5" />
       </div>
       <p className="mt-4 text-sm font-medium text-foreground">Menu not available for this day</p>
-      <p className="mt-1 text-xs text-muted-foreground">Check back soon — admin hasn't uploaded it yet.</p>
+      <p className="mt-1 text-xs text-muted-foreground">Check back soon; the admin hasn't uploaded it yet.</p>
     </motion.div>
   );
 }
