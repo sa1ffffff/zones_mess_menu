@@ -185,6 +185,13 @@ function AdminPage() {
               Continue with Google
             </Button>
           </div>
+        ) : user.email !== "saifullahwasim1@gmail.com" ? (
+          <div className="surface-card mt-10 flex flex-col items-center gap-4 p-10 text-center">
+            <p className="text-lg font-semibold text-destructive">Access Denied</p>
+            <p className="text-sm text-muted-foreground">
+              Only the administrator (saifullahwasim1@gmail.com) can access this page.
+            </p>
+          </div>
         ) : (
           <AnimatePresence mode="wait">
             {activeTab === "menu" ? (
