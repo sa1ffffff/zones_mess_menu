@@ -72,7 +72,7 @@ function HomePage() {
   const loading = dinnersQ.isLoading || ratingsQ.isLoading;
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
+    <div className="flex-1 relative overflow-hidden flex flex-col">
       <div className="ambient-glow" />
       <Navbar />
 

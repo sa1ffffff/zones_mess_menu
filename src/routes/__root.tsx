@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { Toaster } from "sonner";
 import "sonner/dist/styles.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { Footer } from "../components/Footer";
 
 function NotFoundComponent() {
   return (
@@ -119,7 +120,12 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <div className="flex min-h-screen flex-col">
+        <main className="flex-1 flex flex-col relative">
+          <Outlet />
+        </main>
+        <Footer />
+      </div>
       <Toaster position="top-center" richColors />
     </QueryClientProvider>
   );
