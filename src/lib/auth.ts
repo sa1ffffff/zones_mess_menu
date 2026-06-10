@@ -35,8 +35,11 @@ export function userAvatar(user: User | null | undefined) {
 }
 
 export async function signInWithGoogle() {
-  const result = await lovable.auth.signInWithOAuth("google", {
-    redirect_uri: window.location.origin,
+  const result = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: window.location.origin,
+    }
   });
   return result;
 }
