@@ -97,7 +97,7 @@ export function Navbar() {
             <Button
               size="sm"
               onClick={() => signInWithGoogle()}
-              className="rounded-full bg-foreground text-background hover:bg-foreground/90"
+              className="cursor-pointer rounded-full bg-foreground text-background shadow-sm transition-all hover:scale-105 hover:bg-foreground/90 hover:shadow-md active:scale-95"
             >
               Sign in
             </Button>
