@@ -15,6 +15,7 @@ import "sonner/dist/styles.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Footer } from "../components/Footer";
 import { AmbientBackground } from "../components/AmbientBackground";
+import { Analytics } from "@vercel/analytics/react";
 
 function NotFoundComponent() {
   return (
@@ -129,6 +130,7 @@ function RootComponent() {
         <Footer />
       </div>
       <Toaster position="top-center" richColors />
+      <Analytics />
     </QueryClientProvider>
   );
 }
