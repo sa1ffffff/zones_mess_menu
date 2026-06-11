@@ -87,7 +87,3 @@ function GoogleIcon({ className }: { className?: string }) {
     </svg>
   );
 }
-
-    </svg>
-  );
-}
