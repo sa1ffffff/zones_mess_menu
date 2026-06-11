@@ -33,7 +33,7 @@ export function LoginDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-2xl border-border bg-[#18181b] p-8 sm:max-w-[400px]">
         <DialogHeader className="space-y-4 text-left mb-4">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-tr from-amber-500 to-orange-400 p-2 shadow-lg">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary p-2 shadow-lg">
             <img src="/zones-logo.png" alt="Zones" className="h-full w-full object-contain brightness-0 invert" />
           </div>
           <div>
