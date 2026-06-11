@@ -14,6 +14,7 @@ import { Toaster } from "sonner";
 import "sonner/dist/styles.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Footer } from "../components/Footer";
+import { AmbientBackground } from "../components/AmbientBackground";
 
 function NotFoundComponent() {
   return (
@@ -120,7 +121,8 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
+      <AmbientBackground />
+      <div className="flex min-h-screen flex-col relative z-10">
         <main className="flex-1 flex flex-col relative">
           <Outlet />
         </main>
