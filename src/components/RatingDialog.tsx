@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { StarPicker } from "./Stars";
 import { supabase } from "@/integrations/supabase/client";
-import { signInWithGoogle, signInWithMicrosoft, useAuth, userDisplayName } from "@/lib/auth";
+import { signInWithGoogle, useAuth, userDisplayName } from "@/lib/auth";
 import { formatLongDate } from "@/lib/date-utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -86,13 +86,6 @@ export function RatingDialog({
     if (res?.error) toast.error("Sign-in failed");
   }
 
-  async function handleSignInMicrosoft() {
-    setSigningIn(true);
-    const res = await signInWithMicrosoft();
-    setSigningIn(false);
-    if (res?.error) toast.error("Sign-in failed");
-  }
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="rounded-2xl border-border bg-card p-7 sm:max-w-md">
@@ -125,18 +118,6 @@ export function RatingDialog({
                 <GoogleIcon className="mr-2 h-4 w-4" />
               )}
               Continue with Google
-            </Button>
-            <Button
-              onClick={handleSignInMicrosoft}
-              disabled={signingIn}
-              className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
-            >
-              {signingIn ? (
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              ) : (
-                <MicrosoftIcon className="mr-2 h-4 w-4" />
-              )}
-              Continue with Microsoft
             </Button>
           </motion.div>
         ) : (
@@ -189,13 +170,6 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-function MicrosoftIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 21 21" className={className} aria-hidden="true">
-      <rect x="1" y="1" width="9" height="9" fill="#f25022" />
-      <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
-      <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
-      <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
     </svg>
   );
 }

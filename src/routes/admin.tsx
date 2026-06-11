@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth, signInWithGoogle, signInWithMicrosoft } from "@/lib/auth";
+import { useAuth, signInWithGoogle } from "@/lib/auth";
 import { parseMenuMarkdown, type ParsedDinner } from "@/lib/menu-parser";
 import { formatLongDate } from "@/lib/date-utils";
 import { toast } from "sonner";
@@ -184,12 +184,6 @@ function AdminPage() {
                 className="rounded-full bg-foreground text-background hover:bg-foreground/90"
               >
                 Continue with Google
-              </Button>
-              <Button
-                onClick={() => signInWithMicrosoft()}
-                className="rounded-full bg-foreground text-background hover:bg-foreground/90"
-              >
-                Continue with Microsoft
               </Button>
             </div>
           </div>

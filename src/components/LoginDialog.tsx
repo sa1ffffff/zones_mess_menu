@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { signInWithGoogle, signInWithMicrosoft } from "@/lib/auth";
+import { signInWithGoogle } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -13,19 +13,11 @@ export function LoginDialog({
   onOpenChange: (open: boolean) => void;
 }) {
   const [signingInGoogle, setSigningInGoogle] = useState(false);
-  const [signingInMicrosoft, setSigningInMicrosoft] = useState(false);
 
   async function handleSignInGoogle() {
     setSigningInGoogle(true);
     await signInWithGoogle();
     setSigningInGoogle(false);
-    onOpenChange(false);
-  }
-
-  async function handleSignInMicrosoft() {
-    setSigningInMicrosoft(true);
-    await signInWithMicrosoft();
-    setSigningInMicrosoft(false);
     onOpenChange(false);
   }
 
@@ -53,7 +45,7 @@ export function LoginDialog({
         >
           <Button
             onClick={handleSignInGoogle}
-            disabled={signingInGoogle || signingInMicrosoft}
+            disabled={signingInGoogle}
             variant="outline"
             className="h-12 w-full justify-center gap-3 rounded-lg border-white/10 bg-[#27272a] text-sm font-semibold text-white hover:bg-[#3f3f46] hover:text-white"
           >
@@ -63,20 +55,6 @@ export function LoginDialog({
               <GoogleIcon className="h-5 w-5" />
             )}
             Continue with Google
-          </Button>
-
-          <Button
-            onClick={handleSignInMicrosoft}
-            disabled={signingInGoogle || signingInMicrosoft}
-            variant="outline"
-            className="h-12 w-full justify-center gap-3 rounded-lg border-white/10 bg-[#27272a] text-sm font-semibold text-white hover:bg-[#3f3f46] hover:text-white"
-          >
-            {signingInMicrosoft ? (
-              <Loader2 className="h-5 w-5 animate-spin" />
-            ) : (
-              <MicrosoftIcon className="h-5 w-5" />
-            )}
-            Continue with Microsoft
           </Button>
         </motion.div>
       </DialogContent>
@@ -110,13 +88,6 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-function MicrosoftIcon({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 21 21" className={className} aria-hidden="true">
-      <rect x="1" y="1" width="9" height="9" fill="#f25022" />
-      <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
-      <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
-      <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
     </svg>
   );
 }
