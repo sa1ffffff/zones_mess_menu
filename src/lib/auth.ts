@@ -3,19 +3,41 @@ import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 
+import { toast } from "sonner";
+
 export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+    const checkDomain = async (s: Session | null) => {
+      if (s?.user) {
+        const provider = s.user.app_metadata?.provider;
+        const email = s.user.email || "";
+        
+        // Strictly enforce @zones.com for Microsoft (azure) logins
+        if (provider === "azure" && !email.toLowerCase().endsWith("@zones.com")) {
+          await supabase.auth.signOut();
+          toast.error("Access Denied", {
+            description: "Only @zones.com emails are allowed to sign in via Microsoft."
+          });
+          setSession(null);
+          setLoading(false);
+          return;
+        }
+      }
       setSession(s);
       setLoading(false);
+    };
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
+      checkDomain(s);
     });
+    
     supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setLoading(false);
+      checkDomain(data.session);
     });
+    
     return () => sub.subscription.unsubscribe();
   }, []);
 
