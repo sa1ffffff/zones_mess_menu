@@ -44,6 +44,17 @@ export async function signInWithGoogle() {
   return result;
 }
 
+export async function signInWithMicrosoft() {
+  const result = await supabase.auth.signInWithOAuth({
+    provider: "azure",
+    options: {
+      scopes: "email profile",
+      redirectTo: window.location.origin,
+    }
+  });
+  return result;
+}
+
 export async function signOut() {
   await supabase.auth.signOut();
 }

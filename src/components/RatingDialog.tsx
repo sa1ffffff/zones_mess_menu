@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { StarPicker } from "./Stars";
 import { supabase } from "@/integrations/supabase/client";
-import { signInWithGoogle, useAuth, userDisplayName } from "@/lib/auth";
+import { signInWithGoogle, signInWithMicrosoft, useAuth, userDisplayName } from "@/lib/auth";
 import { formatLongDate } from "@/lib/date-utils";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -79,9 +79,16 @@ export function RatingDialog({
     onOpenChange(false);
   }
 
-  async function handleSignIn() {
+  async function handleSignInGoogle() {
     setSigningIn(true);
     const res = await signInWithGoogle();
+    setSigningIn(false);
+    if (res?.error) toast.error("Sign-in failed");
+  }
+
+  async function handleSignInMicrosoft() {
+    setSigningIn(true);
+    const res = await signInWithMicrosoft();
     setSigningIn(false);
     if (res?.error) toast.error("Sign-in failed");
   }
@@ -102,13 +109,13 @@ export function RatingDialog({
           <motion.div
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-2 flex flex-col items-center gap-4 py-4 text-center"
+            className="mt-2 flex flex-col items-center gap-3 py-4 text-center"
           >
-            <p className="text-sm text-muted-foreground">
-              Sign in with Google to submit a rating.
+            <p className="text-sm text-muted-foreground pb-2">
+              Sign in to submit a rating.
             </p>
             <Button
-              onClick={handleSignIn}
+              onClick={handleSignInGoogle}
               disabled={signingIn}
               className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
             >
@@ -118,6 +125,18 @@ export function RatingDialog({
                 <GoogleIcon className="mr-2 h-4 w-4" />
               )}
               Continue with Google
+            </Button>
+            <Button
+              onClick={handleSignInMicrosoft}
+              disabled={signingIn}
+              className="w-full rounded-full bg-foreground text-background hover:bg-foreground/90"
+            >
+              {signingIn ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <MicrosoftIcon className="mr-2 h-4 w-4" />
+              )}
+              Continue with Microsoft
             </Button>
           </motion.div>
         ) : (
@@ -166,6 +185,17 @@ function GoogleIcon({ className }: { className?: string }) {
         opacity=".55"
         d="M12 5.977c1.468 0 2.786.505 3.823 1.496l2.864-2.864C16.964 2.99 14.7 2 12 2A9.998 9.998 0 0 0 3.073 7.51l3.332 2.59C7.19 7.738 9.395 5.977 12 5.977Z"
       />
+    </svg>
+  );
+}
+
+function MicrosoftIcon({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 21 21" className={className} aria-hidden="true">
+      <rect x="1" y="1" width="9" height="9" fill="#f25022" />
+      <rect x="11" y="1" width="9" height="9" fill="#7fba00" />
+      <rect x="1" y="11" width="9" height="9" fill="#00a4ef" />
+      <rect x="11" y="11" width="9" height="9" fill="#ffb900" />
     </svg>
   );
 }

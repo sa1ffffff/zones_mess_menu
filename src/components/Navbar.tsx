@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { useAuth, signInWithGoogle, signOut, userAvatar, userDisplayName } from "@/lib/auth";
+import { useAuth, signOut, userAvatar, userDisplayName } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,9 +12,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Sun, Moon, ShieldCheck } from "lucide-react";
+import { LoginDialog } from "./LoginDialog";
 
 export function Navbar() {
   const { user, loading } = useAuth();
+  const [loginOpen, setLoginOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("theme");
@@ -94,13 +96,16 @@ export function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button
-              size="sm"
-              onClick={() => signInWithGoogle()}
-              className="cursor-pointer rounded-full bg-foreground text-background shadow-sm transition-all hover:scale-105 hover:bg-foreground/90 hover:shadow-md active:scale-95"
-            >
-              Sign in
-            </Button>
+            <>
+              <Button
+                size="sm"
+                onClick={() => setLoginOpen(true)}
+                className="cursor-pointer rounded-full bg-foreground text-background shadow-sm transition-all hover:scale-105 hover:bg-foreground/90 hover:shadow-md active:scale-95"
+              >
+                Sign in
+              </Button>
+              <LoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
+            </>
           )}
         </div>
       </div>

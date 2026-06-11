@@ -5,7 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { supabase } from "@/integrations/supabase/client";
-import { useAuth, signInWithGoogle } from "@/lib/auth";
+import { useAuth, signInWithGoogle, signInWithMicrosoft } from "@/lib/auth";
 import { parseMenuMarkdown, type ParsedDinner } from "@/lib/menu-parser";
 import { formatLongDate } from "@/lib/date-utils";
 import { toast } from "sonner";
@@ -178,12 +178,20 @@ function AdminPage() {
         {authLoading ? null : !user ? (
           <div className="surface-card mt-10 flex flex-col items-center gap-4 p-10 text-center">
             <p className="text-sm text-muted-foreground">Sign in to manage the menu.</p>
-            <Button
-              onClick={() => signInWithGoogle()}
-              className="rounded-full bg-foreground text-background hover:bg-foreground/90"
-            >
-              Continue with Google
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                onClick={() => signInWithGoogle()}
+                className="rounded-full bg-foreground text-background hover:bg-foreground/90"
+              >
+                Continue with Google
+              </Button>
+              <Button
+                onClick={() => signInWithMicrosoft()}
+                className="rounded-full bg-foreground text-background hover:bg-foreground/90"
+              >
+                Continue with Microsoft
+              </Button>
+            </div>
           </div>
         ) : user.email !== "saifullahwasim1@gmail.com" ? (
           <div className="surface-card mt-10 flex flex-col items-center gap-4 p-10 text-center">
