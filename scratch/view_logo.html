@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Logo Preview</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      margin: 40px;
+      background: #111;
+      color: #eee;
+    }
+    .preview-box {
+      margin-bottom: 40px;
+      padding: 20px;
+      border: 1px solid #333;
+      border-radius: 8px;
+    }
+    .theme-light {
+      background: #fff;
+      color: #333;
+    }
+    .theme-dark {
+      background: #0b0f19;
+      color: #f3f4f6;
+    }
+    .flex {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      margin-top: 10px;
+    }
+    img {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>Logo Preview</h1>
+  
+  <div class="preview-box theme-light">
+    <h2>Light Background</h2>
+    <div class="flex">
+      <div>
+        <p>16x16</p>
+        <img src="../public/favicon.svg" width="16" height="16" alt="Z" />
+      </div>
+      <div>
+        <p>32x32</p>
+        <img src="../public/favicon.svg" width="32" height="32" alt="Z" />
+      </div>
+      <div>
+        <p>64x64</p>
+        <img src="../public/favicon.svg" width="64" height="64" alt="Z" />
+      </div>
+      <div>
+        <p>128x128</p>
+        <img src="../public/favicon.svg" width="128" height="128" alt="Z" />
+      </div>
+      <div>
+        <p>256x256</p>
+        <img src="../public/favicon.svg" width="256" height="256" alt="Z" />
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-box theme-dark">
+    <h2>Dark Background</h2>
+    <div class="flex">
+      <div>
+        <p>16x16</p>
+        <img src="../public/favicon.svg" width="16" height="16" alt="Z" />
+      </div>
+      <div>
+        <p>32x32</p>
+        <img src="../public/favicon.svg" width="32" height="32" alt="Z" />
+      </div>
+      <div>
+        <p>64x64</p>
+        <img src="../public/favicon.svg" width="64" height="64" alt="Z" />
+      </div>
+      <div>
+        <p>128x128</p>
+        <img src="../public/favicon.svg" width="128" height="128" alt="Z" />
+      </div>
+      <div>
+        <p>256x256</p>
+        <img src="../public/favicon.svg" width="256" height="256" alt="Z" />
+      </div>
+    </div>
+  </div>
+</body>
+</html>
