@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { UtensilsCrossed } from "lucide-react";
+import { UtensilsCrossed, MoonStar } from "lucide-react";
 import { StarRow } from "./Stars";
 import { RatingDialog } from "./RatingDialog";
 import { formatShortDate, todayISO, weekdayName } from "@/lib/date-utils";
@@ -23,11 +23,6 @@ export function WeeklyView({
   const [activeDate, setActiveDate] = useState<string | null>(null);
   const [expandedDates, setExpandedDates] = useState<Record<string, boolean>>({});
 
-  const weekdays = days.filter((d) => {
-    const name = weekdayName(d);
-    return name !== "Saturday" && name !== "Sunday";
-  });
-
   const handleDayClick = (date: string, hasDinner: boolean) => {
     if (!hasDinner) return;
     if (!user) {
@@ -45,11 +40,58 @@ export function WeeklyView({
   return (
     <>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {weekdays.map((date, i) => {
+        {days.map((date, i) => {
+          const dayName = weekdayName(date);
+          const isWeekend = dayName === "Saturday" || dayName === "Sunday";
           const dinner = dinners[date] ?? null;
           const summary = summaries[date] ?? { average: 0, count: 0 };
           const isToday = date === todayISO();
           const isExpanded = !!expandedDates[date];
+
+          /* ── Weekend "Off" card ── */
+          if (isWeekend) {
+            return (
+              <motion.div
+                key={date}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.04, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                className={cn(
+                  "surface-card relative text-left p-5 cursor-default opacity-60",
+                  "border border-dashed border-border/50",
+                  isToday && "ring-1 ring-primary/20",
+                )}
+              >
+                {isToday && (
+                  <span className="chip-accent absolute right-4 top-4">Today</span>
+                )}
+                <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  {dayName}
+                </div>
+                <div className="mt-1 text-lg font-semibold tracking-tight text-muted-foreground/80">
+                  {formatShortDate(date)}
+                </div>
+
+                <div className="mt-5 flex min-h-[80px] flex-col items-center justify-center text-center">
+                  <MoonStar className="mb-2 h-6 w-6 text-muted-foreground/50" />
+                  <span className="text-sm font-medium text-muted-foreground">
+                    Day Off
+                  </span>
+                  <span className="mt-1 text-xs text-muted-foreground/60">
+                    No dinner service
+                  </span>
+                </div>
+
+                <div className="mt-5 border-t border-border/40 pt-4">
+                  <span className="text-xs text-muted-foreground/50">
+                    Mess is closed on weekends
+                  </span>
+                </div>
+              </motion.div>
+            );
+          }
+
+          /* ── Regular weekday card ── */
           return (
             <motion.div
               key={date}
@@ -67,7 +109,7 @@ export function WeeklyView({
                 <span className="chip-accent absolute right-4 top-4">Today</span>
               )}
               <div className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                {weekdayName(date)}
+                {dayName}
               </div>
               <div className="mt-1 text-lg font-semibold tracking-tight">
                 {formatShortDate(date)}
