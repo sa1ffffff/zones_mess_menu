@@ -42,22 +42,24 @@ function tryParseDate(raw: string, fallbackYear: number): string | null {
   if (iso) return `${iso[1]}-${iso[2]}-${iso[3]}`;
 
   // "June 10, 2026" / "Tuesday, June 10 2026" / "10 June 2026"
-  const m1 = s.match(/(?:^|\s)([A-Za-z]+)\s+(\d{1,2})(?:st|nd|rd|th)?(?:[,\s]+(\d{4}))?/);
+  const m1 = s.match(/(?:^|\s)([A-Za-z]+)[\s-]+(\d{1,2})(?:st|nd|rd|th)?(?:[,\s-]+(\d{2,4}))?/);
   if (m1 && MONTHS[m1[1].toLowerCase()] !== undefined) {
     const mon = MONTHS[m1[1].toLowerCase()];
     const day = parseInt(m1[2], 10);
-    const yr = m1[3] ? parseInt(m1[3], 10) : fallbackYear;
+    let yr = m1[3] ? parseInt(m1[3], 10) : fallbackYear;
+    if (yr < 100) yr += 2000;
     return toISO(yr, mon, day);
   }
-  const m2 = s.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+([A-Za-z]+)(?:[,\s]+(\d{4}))?/);
+  const m2 = s.match(/^(\d{1,2})(?:st|nd|rd|th)?[\s-]+([A-Za-z]+)(?:[,\s-]+(\d{2,4}))?/);
   if (m2 && MONTHS[m2[2].toLowerCase()] !== undefined) {
     const mon = MONTHS[m2[2].toLowerCase()];
     const day = parseInt(m2[1], 10);
-    const yr = m2[3] ? parseInt(m2[3], 10) : fallbackYear;
+    let yr = m2[3] ? parseInt(m2[3], 10) : fallbackYear;
+    if (yr < 100) yr += 2000;
     return toISO(yr, mon, day);
   }
   // dd/mm/yyyy
-  const m3 = s.match(/^(\d{1,2})[/.](\d{1,2})[/.](\d{2,4})/);
+  const m3 = s.match(/^(\d{1,2})[/.-](\d{1,2})[/.-](\d{2,4})/);
   if (m3) {
     const d = parseInt(m3[1], 10);
     const mo = parseInt(m3[2], 10) - 1;
@@ -121,6 +123,32 @@ export function parseMenuMarkdown(md: string): ParsedDinner[] {
   for (const raw of lines) {
     const line = raw.trim();
     if (!line) continue;
+
+    // Table row detection (e.g. | 1-Jun-26 | Monday | Fresh Salad, Raita |)
+    if (line.startsWith("|") && line.endsWith("|")) {
+      const cells = line
+        .split("|")
+        .map((s) => s.trim())
+        .filter(Boolean);
+      if (cells.length >= 2) {
+        const maybeDateFromCell =
+          tryParseDate(cells[0], fallbackYear) ||
+          tryParseDate(cells[1], fallbackYear);
+        if (maybeDateFromCell) {
+          const itemsCell = cells[cells.length - 1];
+          if (!itemsCell.toLowerCase().includes("items") && !itemsCell.includes("---")) {
+            flush();
+            dinners.push({
+              date: maybeDateFromCell,
+              time_start: "7:30 PM",
+              time_end: "9:00 PM",
+              menu_items: splitItems(itemsCell),
+            });
+            continue;
+          }
+        }
+      }
+    }
 
     // 1) Date line? (heading-style OR bare date like "2026-06-10")
     const maybeDate = tryParseDate(line, fallbackYear);
