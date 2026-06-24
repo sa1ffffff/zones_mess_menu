@@ -18,9 +18,18 @@ export function Footer() {
           <span className="text-xs text-muted-foreground/70">
             &copy; {currentYear} · All rights reserved
           </span>
-          <span className="text-sm font-medium text-foreground/90 tracking-tight">
-            Developed by Saif(Jeff) Waseem
-          </span>
+          <div className="flex items-center gap-1.5 text-sm font-medium text-muted-foreground tracking-tight">
+            <span>Developed by</span>
+            <a
+              href="https://saifullahwaseem.dev"
+              target="_blank"
+              rel="noreferrer"
+              className="group relative inline-flex items-center text-foreground transition-colors hover:text-primary"
+            >
+              Saif (Jeff) Waseem
+              <span className="absolute -bottom-0.5 left-0 h-px w-0 bg-primary/80 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+          </div>
           <div className="flex items-center gap-3">
             <a
               href="https://github.com/sa1ffffff"
