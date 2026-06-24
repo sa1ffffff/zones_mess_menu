@@ -49,3 +49,31 @@ export function getWeekDates(iso: string): string[] {
   }
   return out;
 }
+
+export function getMonthDates(iso: string): string[] {
+  const [y, m] = iso.split("-").map(Number);
+  const daysInMonth = new Date(y, m, 0).getDate(); // m is already 1-indexed from split
+  const out: string[] = [];
+  for (let d = 1; d <= daysInMonth; d++) {
+    out.push(
+      `${y}-${m.toString().padStart(2, "0")}-${d.toString().padStart(2, "0")}`,
+    );
+  }
+  return out;
+}
+
+export function getMonthName(iso: string): string {
+  const [y, m] = iso.split("-").map(Number);
+  const date = new Date(y, m - 1, 1);
+  return date.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+}
+
+export function getMonthStartEnd(iso: string): { start: string; end: string } {
+  const [y, m] = iso.split("-").map(Number);
+  const daysInMonth = new Date(y, m, 0).getDate();
+  const mStr = m.toString().padStart(2, "0");
+  return {
+    start: `${y}-${mStr}-01`,
+    end: `${y}-${mStr}-${daysInMonth.toString().padStart(2, "0")}`,
+  };
+}
