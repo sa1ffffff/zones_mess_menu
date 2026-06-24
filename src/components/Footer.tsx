@@ -32,7 +32,9 @@ export function Footer() {
               <Github className="h-3.5 w-3.5" strokeWidth={2} />
             </a>
             <a
-              href="mailto:saifullahwaseem.dev@gmail.com"
+              href="https://mail.google.com/mail/?view=cm&fs=1&to=saifullahwasim1@gmail.com"
+              target="_blank"
+              rel="noreferrer"
               className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border/50 text-muted-foreground transition-all hover:border-primary/40 hover:text-primary hover:scale-110 hover:shadow-sm"
               aria-label="Email"
             >
