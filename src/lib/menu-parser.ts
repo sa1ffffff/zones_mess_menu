@@ -124,7 +124,7 @@ export function parseMenuMarkdown(md: string): ParsedDinner[] {
 
     // 1) Date line? (heading-style OR bare date like "2026-06-10")
     const maybeDate = tryParseDate(line, fallbackYear);
-    if (maybeDate && /^\s*(?:#+|\*+)?\s*(\d{4}-\d{2}-\d{2}|[A-Za-z]+\s+\d|\d{1,2}\s+[A-Za-z]+|\d{1,2}[/.])/i.test(line)) {
+    if (maybeDate && /^\s*(?:#+|\*+)?\s*(?:[A-Za-z]+,?\s+)?(\d{4}-\d{2}-\d{2}|[A-Za-z]+\s+\d|\d{1,2}\s+[A-Za-z]+|\d{1,2}[/.])/i.test(line)) {
       flush();
       currentDate = maybeDate;
       currentMeal = null;

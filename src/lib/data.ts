@@ -23,6 +23,20 @@ export type RatingSummary = { average: number; count: number };
 import { HARDCODED_DINNERS } from "./menu-data";
 
 export async function fetchDinnersInRange(start: string, end: string) {
+  // Try Supabase first; fall back to hardcoded data on error or empty result
+  try {
+    const { data, error } = await supabase
+      .from("dinners")
+      .select("*")
+      .gte("date", start)
+      .lte("date", end)
+      .order("date", { ascending: true });
+    if (!error && data && data.length > 0) {
+      return data as Dinner[];
+    }
+  } catch {
+    // Supabase unavailable — fall back silently
+  }
   return HARDCODED_DINNERS.filter((d) => d.date >= start && d.date <= end);
 }
 
