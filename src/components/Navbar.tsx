@@ -11,12 +11,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogOut, Sun, Moon, ShieldCheck } from "lucide-react";
+import { LogOut, Sun, Moon, ShieldCheck, Award } from "lucide-react";
 import { LoginDialog } from "./LoginDialog";
+import { HallOfShameDialog } from "./HallOfShameDialog";
 
 export function Navbar() {
   const { user, loading } = useAuth();
   const [loginOpen, setLoginOpen] = useState(false);
+  const [hallOfShameOpen, setHallOfShameOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
       const stored = localStorage.getItem("theme");
@@ -50,6 +52,18 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setHallOfShameOpen(true)}
+            id="hall-of-shame-nav-btn"
+            className="inline-flex items-center gap-1.5 rounded-full text-xs font-semibold text-accent bg-accent/10 border border-accent/20 hover:bg-accent/20 hover:scale-105 active:scale-95 transition-all px-3 py-1.5"
+            title="View Mess Line Etiquette & Hall of Shame Announcement"
+          >
+            <Award className="h-3.5 w-3.5" />
+            <span className="hidden xs:inline sm:inline">Hall of Shame</span>
+          </Button>
+
           {user?.email === "saifullahwasim1@gmail.com" && (
             <Link
               to="/admin"
@@ -109,6 +123,7 @@ export function Navbar() {
           )}
         </div>
       </div>
+      <HallOfShameDialog open={hallOfShameOpen} onOpenChange={setHallOfShameOpen} />
     </header>
   );
 }

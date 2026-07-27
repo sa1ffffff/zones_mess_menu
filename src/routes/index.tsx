@@ -7,6 +7,7 @@ import { DinnerCard } from "@/components/DinnerCard";
 import { WeeklyView } from "@/components/WeeklyView";
 import { MonthlyView } from "@/components/MonthlyView";
 import { QueryDialog } from "@/components/QueryDialog";
+import { HallOfShameDialog } from "@/components/HallOfShameDialog";
 import { cn } from "@/lib/utils";
 import {
   fetchDinnersInRange,
@@ -186,6 +187,7 @@ function HomePage() {
       </div>
 
       <QueryDialog open={queryOpen} onOpenChange={setQueryOpen} />
+      <HallOfShameDialog />
     </div>
   );
 }
