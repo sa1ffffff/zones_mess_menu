@@ -24,7 +24,12 @@ import {
   Download,
   Sparkles,
   Info,
+  Award,
+  UserX,
+  Plus,
+  Trash2,
 } from "lucide-react";
+import { fetchShameEntries, addShameEntry, deleteShameEntry, type ShameEntry } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -58,7 +63,7 @@ async function fetchQueries(): Promise<Query[]> {
 function AdminPage() {
   const { user, loading: authLoading } = useAuth();
   const queryClient = useQueryClient();
-  const [activeTab, setActiveTab] = useState<"menu" | "queries">("menu");
+  const [activeTab, setActiveTab] = useState<"menu" | "queries" | "shame">("menu");
   const [md, setMd] = useState("");
   const [parsed, setParsed] = useState<ParsedDinner[]>([]);
   const [saving, setSaving] = useState(false);
@@ -121,19 +126,25 @@ function AdminPage() {
               Admin
             </div>
             <h1 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">
-              {activeTab === "menu" ? "Upload monthly menu" : "User Queries"}
+              {activeTab === "menu"
+                ? "Upload monthly menu"
+                : activeTab === "queries"
+                  ? "User Queries"
+                  : "Hall of Shame Manager"}
             </h1>
             <p className="mt-2 max-w-xl text-sm text-muted-foreground">
               {activeTab === "menu"
                 ? "Upload a markdown file to update the live dinner menu. Only dinner entries are extracted."
-                : "All queries submitted by users are listed below. Newest first."}
+                : activeTab === "queries"
+                  ? "All queries submitted by users are listed below. Newest first."
+                  : "Add or remove line-cutters from the public Hall of Shame."}
             </p>
           </div>
         </div>
 
         {/* Tab Navigation */}
         <div className="mt-6 flex items-center gap-1 rounded-full border border-border bg-card p-1 w-fit shadow-sm">
-          {(["menu", "queries"] as const).map((tab) => {
+          {(["menu", "queries", "shame"] as const).map((tab) => {
             const active = activeTab === tab;
             return (
               <button
@@ -154,10 +165,12 @@ function AdminPage() {
                 )}
                 {tab === "menu" ? (
                   <FileText className="h-3.5 w-3.5" />
-                ) : (
+                ) : tab === "queries" ? (
                   <MessageSquare className="h-3.5 w-3.5" />
+                ) : (
+                  <Award className="h-3.5 w-3.5" />
                 )}
-                {tab === "menu" ? "Menu Upload" : "Queries"}
+                {tab === "menu" ? "Menu Upload" : tab === "queries" ? "Queries" : "Hall of Shame"}
                 {tab === "queries" && queriesQ.data && queriesQ.data.length > 0 && (
                   <span className={cn(
                     "ml-0.5 rounded-full px-1.5 py-0.5 text-xs font-semibold leading-none",
@@ -298,7 +311,7 @@ function AdminPage() {
                   </section>
                 </div>
               </motion.div>
-            ) : (
+            ) : activeTab === "queries" ? (
               <motion.div
                 key="queries-tab"
                 initial={{ opacity: 0, y: 8 }}
@@ -355,6 +368,17 @@ function AdminPage() {
                     ))}
                   </div>
                 )}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="shame-tab"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.2 }}
+                className="mt-8"
+              >
+                <HallOfShameAdminManager />
               </motion.div>
             )}
           </AnimatePresence>
@@ -671,3 +695,154 @@ IMPORTANT:
 - End after the last dinner entry.
 
 Now, please convert the attached menu image into this exact format.`;
+
+function HallOfShameAdminManager() {
+  const [entries, setEntries] = useState<ShameEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [name, setName] = useState("");
+  const [reason, setReason] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  async function load() {
+    setLoading(true);
+    const data = await fetchShameEntries();
+    setEntries(data);
+    setLoading(false);
+  }
+
+  async function handleAdd(e: React.FormEvent) {
+    e.preventDefault();
+    if (!name.trim() || !reason.trim()) {
+      toast.error("Please enter a name and reason");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const added = await addShameEntry(name, reason);
+      setEntries((prev) => [added, ...prev]);
+      setName("");
+      setReason("");
+      toast.success(`Added ${added.name} to the Hall of Shame 📸`);
+    } catch {
+      toast.error("Failed to add entry");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function handleDelete(id: string, entryName: string) {
+    try {
+      await deleteShameEntry(id);
+      setEntries((prev) => prev.filter((item) => item.id !== id));
+      toast.success(`Removed ${entryName} from Hall of Shame`);
+    } catch {
+      toast.error("Failed to remove entry");
+    }
+  }
+
+  return (
+    <div className="space-y-8">
+      {/* Form Card */}
+      <div className="surface-card p-6 sm:p-8">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-accent/10 text-accent">
+            <Award className="h-5 w-5" />
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold text-foreground">Add to Hall of Shame</h2>
+            <p className="text-xs text-muted-foreground">Add someone who skipped the line or broke queue etiquette</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleAdd} className="mt-6 space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="text-xs font-semibold text-foreground mb-1.5 block">Name</label>
+              <input
+                type="text"
+                placeholder="e.g. John Doe"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-foreground mb-1.5 block">Reason / Offense</label>
+              <input
+                type="text"
+                placeholder="e.g. 'I'm just getting water' maneuver"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                className="w-full rounded-xl border border-border bg-background px-4 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-accent"
+              />
+            </div>
+          </div>
+          <div className="flex justify-end">
+            <Button
+              type="submit"
+              disabled={submitting}
+              className="rounded-full bg-accent px-6 text-xs font-semibold text-accent-foreground shadow-sm hover:bg-accent/90"
+            >
+              {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add Entry"}
+            </Button>
+          </div>
+        </form>
+      </div>
+
+      {/* Entries List */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
+            <UserX className="h-4 w-4 text-accent" />
+            Current Hall of Shame Entries ({entries.length})
+          </h2>
+        </div>
+
+        {loading ? (
+          <div className="surface-card flex items-center justify-center p-12 text-sm text-muted-foreground gap-2">
+            <Loader2 className="h-4 w-4 animate-spin" /> Loading entries...
+          </div>
+        ) : entries.length === 0 ? (
+          <div className="surface-card flex flex-col items-center gap-2 p-12 text-center text-sm text-muted-foreground">
+            <Award className="h-8 w-8 text-muted" />
+            <p className="font-medium text-foreground">No entries found</p>
+            <p className="text-xs">Add your first line-cutter entry above.</p>
+          </div>
+        ) : (
+          <div className="grid gap-3 sm:grid-cols-2">
+            {entries.map((entry) => (
+              <div
+                key={entry.id}
+                className="surface-card p-5 flex items-start justify-between gap-4 hover:border-accent/30 transition-all"
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-sm text-foreground">{entry.name}</span>
+                    <span className="text-[10px] text-muted-foreground rounded-full bg-muted px-2 py-0.5 font-mono">
+                      {entry.date}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed italic">
+                    "{entry.reason}"
+                  </p>
+                </div>
+                <button
+                  onClick={() => handleDelete(entry.id, entry.name)}
+                  className="rounded-lg p-2 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
+                  title="Remove from Hall of Shame"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
