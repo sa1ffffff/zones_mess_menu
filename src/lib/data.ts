@@ -79,30 +79,13 @@ export type ShameEntry = {
   created_at: string;
 };
 
-const DEFAULT_SHAME_ENTRIES: ShameEntry[] = [
-  {
-    id: "sample-1",
-    name: "Tactical Water Guy",
-    reason: "Claimed he was 'just getting a napkin' and took a full plate of biryani",
-    date: "2026-07-26",
-    created_at: new Date().toISOString(),
-  },
-  {
-    id: "sample-2",
-    name: "The Chatty Cutter",
-    reason: "Distracted the front of the line with a story to slide right in",
-    date: "2026-07-25",
-    created_at: new Date().toISOString(),
-  },
-];
-
 export async function fetchShameEntries(): Promise<ShameEntry[]> {
   try {
     const { data, error } = await supabase
       .from("hall_of_shame")
       .select("*")
       .order("created_at", { ascending: false });
-    if (!error && data && data.length > 0) {
+    if (!error && data) {
       return data as ShameEntry[];
     }
   } catch {}
@@ -115,7 +98,7 @@ export async function fetchShameEntries(): Promise<ShameEntry[]> {
       } catch {}
     }
   }
-  return DEFAULT_SHAME_ENTRIES;
+  return [];
 }
 
 export async function addShameEntry(name: string, reason: string): Promise<ShameEntry> {
