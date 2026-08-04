@@ -83,13 +83,37 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Zones Dinner Menu" },
-      { name: "description", content: "What's for dinner at Zones tonight." },
+      {
+        name: "description",
+        content:
+          "Your daily mess menu at Zones Islamabad — browse today's dinner, view the weekly schedule, and rate your meals.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Zones Dinner Menu" },
-      { name: "twitter:card", content: "summary" },
+      {
+        property: "og:image",
+        content: "https://zones-mess-menu.vercel.app/zones-logo.png",
+      },
+      {
+        property: "og:image:width",
+        content: "1200",
+      },
+      {
+        property: "og:image:height",
+        content: "630",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:image",
+        content: "https://zones-mess-menu.vercel.app/zones-logo.png",
+      },
     ],
     links: [
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/png", href: "/zones-logo.png" },
+      { rel: "apple-touch-icon", href: "/zones-logo.png" },
       { rel: "stylesheet", href: appCss },
       {
         rel: "preconnect",
