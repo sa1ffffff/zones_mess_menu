@@ -110,6 +110,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "twitter:image",
         content: "https://zones-mess-menu.vercel.app/zones-logo.png",
       },
+      {
+        name: "google-site-verification",
+        content: "SgEKzYrbOy4ZGaLWWJI-Uzkjwl_sHdbH6H3U2",
+      },
     ],
     links: [
       { rel: "icon", type: "image/png", href: "/zones-logo.png" },
