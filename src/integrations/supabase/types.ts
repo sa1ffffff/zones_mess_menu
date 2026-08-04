@@ -44,6 +44,30 @@ export type Database = {
         }
         Relationships: []
       }
+      hall_of_shame: {
+        Row: {
+          id: string
+          name: string
+          reason: string
+          date: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          reason: string
+          date?: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          reason?: string
+          date?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
       queries: {
         Row: {
           id: string
