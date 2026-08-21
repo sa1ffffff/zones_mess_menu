@@ -34,12 +34,6 @@ export function HallOfShameDialog({
   useEffect(() => {
     if (open !== undefined) {
       setIsOpen(open);
-      return;
-    }
-
-    const hasSeen = sessionStorage.getItem("hasSeenHallOfShameModal");
-    if (!hasSeen) {
-      setIsOpen(true);
     }
   }, [open]);
 
@@ -57,7 +51,6 @@ export function HallOfShameDialog({
   }
 
   const handleClose = () => {
-    sessionStorage.setItem("hasSeenHallOfShameModal", "true");
     setIsOpen(false);
     if (onOpenChange) {
       onOpenChange(false);
@@ -65,9 +58,6 @@ export function HallOfShameDialog({
   };
 
   const handleOpenChange = (newOpen: boolean) => {
-    if (!newOpen) {
-      sessionStorage.setItem("hasSeenHallOfShameModal", "true");
-    }
     setIsOpen(newOpen);
     if (onOpenChange) {
       onOpenChange(newOpen);
